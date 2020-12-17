@@ -1,0 +1,113 @@
+from tkinter import *
+
+root = Tk()
+
+root.title("Calculator")
+
+coordinates = [] 
+
+x_i,y_j,z_k = [],[],[] 
+
+n = 0
+
+X = Entry(root)
+X.insert(END, "Enter the x-coordinate")
+X.grid(row=0, column=0, columnspan=3, padx=12, pady=15)
+
+Y = Entry(root)
+Y.insert(END, "Enter the y-coordinate")
+Y.grid(row=1, column=0, columnspan=3, padx=12, pady=15)
+
+Z = Entry(root)
+Z.insert(END, "Enter the z-coordinate")
+Z.grid(row=2, column=0, columnspan=3, padx=12, pady=15)
+
+def x():
+    global n
+    n = 1
+    
+def y():
+    global n
+    n = 2
+    
+def z():
+    global n
+    n = 3
+    
+def S(m):
+
+    if n == 1: 
+        X.insert(END,str(m)) 
+        coordinates.append(X.get()) 
+    
+    if n == 2:
+        Y.insert(END,str(m)) 
+        coordinates.append(Y.get())
+    
+    if n == 3:
+        Z.insert(END,str(m))
+        coordinates.append(Z.get())
+
+def clear():
+    
+    X.delete(0,END)
+    Y.delete(0,END)
+    Z.delete(0,END)
+
+    coordinates.clear()
+    
+    xi.clear()
+    yi.clear()
+    zi.clear()
+    
+def equal():
+    
+    x_i.append(coordinates[len(X.get())-1]) 
+    y_j.append(coordinates[len(Y.get())+len(X.get())-1]) 
+    z_k.append(coordinates[len(Z.get())+len(X.get())+len(Y.get())-1]) 
+    
+    c_actual = x_i + y_j + z_k 
+
+    sq = 0
+    for d in c_actual:
+        e = float(d)
+        sq = sq + e**2 
+    mag = sq**0.5
+    val.config(text = f"The magnitude of the vector is: {round(mag,3)}") 
+    val.grid(row=3, column=0, columnspan=4, padx=12, pady=15)
+    
+b1 = Button(root, text="1", padx=30, pady=15, command=lambda: S(1))
+b2 = Button(root, text="2", padx=30, pady=15, command=lambda: S(2))
+b3 = Button(root, text="3", padx=30, pady=15, command=lambda: S(3))
+b4 = Button(root, text="4", padx=30, pady=15, command=lambda: S(4))
+b5 = Button(root, text="5", padx=30, pady=15, command=lambda: S(5))
+b6 = Button(root, text="6", padx=30, pady=15, command=lambda: S(6))
+b7 = Button(root, text="7", padx=30, pady=15, command=lambda: S(7))
+b8 = Button(root, text="8", padx=30, pady=15, command=lambda: S(8))
+b9 = Button(root, text="9", padx=30, pady=15, command=lambda: S(9))
+b0 = Button(root, text="0", padx=30, pady=15, command=lambda: S(0))
+bx = Button(root, text="x", padx=30, pady=15, command=x)
+by = Button(root, text="y", padx=30, pady=15, command=y)
+bz = Button(root, text="z", padx=30, pady=15, command=z)
+bclear = Button(root, text="Clear", padx=19, pady=15, command=clear)
+bequal = Button(root, text="=", padx=29, pady=15, command=equal)
+
+b1.grid(row=6, column=0)
+b2.grid(row=6, column=1)
+b3.grid(row=6, column=2)
+b4.grid(row=5, column=0)
+b5.grid(row=5, column=1)
+b6.grid(row=5, column=2)
+b7.grid(row=4, column=0)
+b8.grid(row=4, column=1)
+b9.grid(row=4, column=2)
+b0.grid(row=7, column=1)
+bx.grid(row=8, column=0)
+by.grid(row=8, column=1)
+bz.grid(row=8, column=2)
+bclear.grid(row=7, column=2)
+bequal.grid(row=7, column=0)
+
+val = Label(root) 
+
+root.mainloop()

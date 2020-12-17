@@ -1,0 +1,885 @@
+#include<fstream.h>
+#include<conio.h>
+#include<string.h>
+#include<iostream.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<process.h>
+#include<graphics.h>
+#include<dos.h>
+fstream f2;
+int ch,ma,a=0;
+static int
+a_plus=0,a_minus=0,b_plus=0,b_minus=0,ab_plus=0,ab_minus=0,o_plus=0,o_minus=0;
+int d=0,r=0;
+struct blood { int total; }A;
+int color(void)
+{
+
+   int gdriver = DETECT, gmode, errorcode;
+   int style, midx, midy;
+   int size = 1;
+
+   initgraph(&gdriver, &gmode, "C:\\turboc3\\bgi");
+
+   errorcode = graphresult();
+   if (errorcode != grOk)
+   {
+	 printf("Graphics error: %s\n", grapherrormsg(errorcode));
+	 printf("Press any key to halt:");
+	 getch();
+	 exit(1);
+   }
+
+
+
+   midx = getmaxx() / 2;
+   midy = getmaxy() / 2;
+
+   settextjustify(CENTER_TEXT, CENTER_TEXT);
+
+   for (style=GOTHIC_FONT; style<=GOTHIC_FONT; style++)
+   {
+	 cleardevice();
+	 if (style == GOTHIC_FONT)
+	    size = 9;
+	 setcolor(RED);
+
+	 settextstyle(style, HORIZ_DIR, size);
+	 delay(400);
+	 outtextxy(300,120,"SVR");
+	 delay(500);
+	 outtextxy(midx, midy, "BLOOD BANK");
+	 getch();
+   }
+
+
+   closegraph();
+   return 0;
+}
+class Date
+{public :
+int dd,
+mm,yy;
+void getdate()
+{
+cout<<"Enter the date"<<endl;
+cout<<"dd:";
+cin>>dd;
+cout<<"mm:";
+cin>>mm;
+cout<<"yy:";
+cin>>yy;
+if(yy>0)
+{if(mm==1||mm==3||mm==5||mm==7||mm==8||mm==10||mm==12 && dd>0 && dd<=31)
+ cout<<"Date is registered\n";
+ else if(mm==4||mm==6||mm==9||mm==11&&dd>0&&dd<=30)
+ cout<<"Date is registered\n";
+ else if(mm==2)
+ {
+  if((yy%400==0||yy%100!=0&&yy%4==0)&&dd>0&&dd<=29)
+  cout<<"Date is registered\n";
+  else if(dd>0&&dd<=28)
+  cout<<"Date is registered\n";
+  else
+  {cout<<"invalid date\n";
+ a=1;}}
+ else
+{ cout<<"invalid date\n";
+ a=1;}
+}
+else
+{cout<<"invalid date\n";
+a=1;}}
+void showdate()
+{cout<<"The date is :\t";
+cout<<dd<<":"<<mm<<":"<<yy<<"\n";
+}
+};
+class Person
+{
+protected :
+long aadharno;
+char name[25];
+char addr[50];
+Date DOB;
+int c;
+public :
+char blgp[5];
+void initdata()
+{cout<<"Enter details of the person:\n";
+cout<<"Enter aadhar number:";
+cin>>aadharno;
+cout<<"Enter name:";
+gets(name);
+cout<<"Enter address:";
+gets(addr);
+do
+{
+DOB.getdate();
+if(a==0)
+break;
+else{a=0;
+continue;
+}
+}
+while(1);
+cout<<"Enter the blood group of the person (A+,B+,A-,B-,AB+,AB-,O+.O-):";
+gets(blgp);
+}
+void dispdata()
+{
+cout<<"Details of the person:\n";
+cout<<"Aadhar number:"<<aadharno;
+cout<<"\nName:";
+puts(name);
+cout<<"Address:";
+puts(addr);
+DOB.showdate();
+cout<<"Blood Group:";
+puts(blgp);
+}
+void blgroup()
+{
+if(strcmpi("A+",blgp)==0)
+c=1;
+else if(strcmpi("A-",blgp)==0)
+c=2;
+else if(strcmpi("B+",blgp)==0)
+c=3;
+else if(strcmpi("B-",blgp)==0)
+c=4;
+else if(strcmpi("AB+",blgp)==0)
+c=5;
+else if(strcmpi("AB-",blgp)==0)
+c=6;
+else if(strcmpi("O+",blgp)==0)
+c=7;
+else if(strcmpi("O-",blgp)==0)
+c=8;
+}
+};
+class Donor : public Person
+{
+public:
+void update_don(int q);
+}D[20];
+void Donor::update_don(int q)
+{Donor dr=D[d];
+fstream f;
+blgroup();
+switch(c)
+{
+case 1: a_plus+=q;
+f2.open("ap1.dat",ios::out|ios::in|ios::binary);
+if(f2)
+{
+f2.seekg(0,ios::end);
+if(f2.tellg()!=0)
+{ f2.seekg(0);
+f2.read((char*)&A,sizeof(A));
+A.total+=a_plus;
+
+f2.seekp(0);
+f2.write((char*)&A,sizeof(A));
+}
+else
+f2.write((char *)&A,sizeof(A));
+
+f2.seekg(0);
+cout<<"Please wait untill you donate blood completely.......\n";
+delay(5000);
+cout<<"\nQuantity of A+ Blood in Blood Bank=";
+
+f2.read((char*)&A,sizeof(A));
+  { cout<<A.total<<" ml"; }
+f2.close();
+}
+else cout<<"not Opened.... TRY AGAIN!!!!!!";
+f.open("Aplus.dat",ios::out|ios::app|ios::binary);
+f.write((char*)&dr,sizeof(dr));
+f.close();
+break;
+case 2: a_minus+=q;
+f2.open("ap2.dat",ios::out|ios::in|ios::binary);
+if(f2)
+{
+f2.seekg(0,ios::end);
+if(f2.tellg()!=0)
+{ f2.seekg(0);
+f2.read((char*)&A,sizeof(A));
+A.total+=a_minus;
+
+f2.seekp(0);
+f2.write((char*)&A,sizeof(A));
+}
+else
+f2.write((char *)&A,sizeof(A));
+
+f2.seekg(0);
+cout<<"Please wait untill you donate blood completely.......\n";
+delay(5000);
+cout<<"\nQuantity of A- Blood in Blood Bank=";
+f2.read((char*)&A,sizeof(A));
+  { cout<<A.total<<" ml"; }
+f2.close();
+}
+else cout<<"not Opened.... TRY AGAIN!!!!!!";
+f.open("Aminus.dat",ios::out|ios::app|ios::binary);
+f.write((char*)&dr,sizeof(dr));
+f.close();
+break;
+case 3: b_plus+=q;
+f2.open("ap3.dat",ios::out|ios::in|ios::binary);
+if(f2)
+{
+f2.seekg(0,ios::end);
+if(f2.tellg()!=0)
+{ f2.seekg(0);
+f2.read((char*)&A,sizeof(A));
+A.total+=b_plus;
+
+f2.seekp(0);
+f2.write((char*)&A,sizeof(A));
+}
+else
+f2.write((char *)&A,sizeof(A));
+
+f2.seekg(0);
+cout<<"Please wait untill you donate blood completely.......\n";
+delay(5000);
+cout<<"\nQuantity of B+ Blood in Blood Bank=";
+f2.read((char*)&A,sizeof(A));
+  { cout<<A.total<<" ml"; }
+f2.close();
+}
+else cout<<"not Opened.... TRY AGAIN!!!!!!";
+f.open("Bplus.dat",ios::out|ios::app|ios::binary);
+f.write((char*)&dr,sizeof(dr));
+f.close();
+break;
+
+case 4: b_minus+=q;
+f2.open("ap4.dat",ios::out|ios::in|ios::binary);
+if(f2)
+{
+f2.seekg(0,ios::end);
+if(f2.tellg()!=0)
+{ f2.seekg(0);
+f2.read((char*)&A,sizeof(A));
+A.total+=b_minus;
+
+f2.seekp(0);
+f2.write((char*)&A,sizeof(A));
+}
+else
+f2.write((char *)&A,sizeof(A));
+
+f2.seekg(0);
+cout<<"Please wait untill you donate blood completely.......\n";
+delay(5000);
+cout<<"\nQuantity of B- Blood in Blood Bank=";
+f2.read((char*)&A,sizeof(A));
+  { cout<<A.total<<" ml"; }
+f2.close();
+}
+else cout<<"not Opened.... TRY AGAIN!!!!!!";
+f.open("Bminus.dat",ios::out|ios::app|ios::binary);
+f.write((char*)&dr,sizeof(dr));
+f.close();
+break;
+
+case 5: ab_plus+=q;
+f2.open("ap5.dat",ios::out|ios::in|ios::binary);
+if(f2)
+{
+f2.seekg(0,ios::end);
+if(f2.tellg()!=0)
+{ f2.seekg(0);
+f2.read((char*)&A,sizeof(A));
+A.total+=ab_plus;
+
+f2.seekp(0);
+f2.write((char*)&A,sizeof(A));
+}
+else
+f2.write((char *)&A,sizeof(A));
+
+f2.seekg(0);
+cout<<"Please wait untill you donate blood completely.......\n";
+delay(5000);
+cout<<"\nQuantity of AB+ Blood in Blood Bank=";
+f2.read((char*)&A,sizeof(A));
+  { cout<<A.total<<" ml"; }
+f2.close();
+}
+else cout<<"not Opened.... TRY AGAIN!!!!!!";
+f.open("ABplus.dat",ios::out|ios::app|ios::binary);
+f.write((char*)&dr,sizeof(dr));
+f.close();
+break;
+
+case 6: ab_minus+=q;
+f2.open("ap6.dat",ios::out|ios::in|ios::binary);
+if(f2)
+{
+f2.seekg(0,ios::end);
+if(f2.tellg()!=0)
+{ f2.seekg(0);
+f2.read((char*)&A,sizeof(A));
+A.total+=ab_minus;
+
+f2.seekp(0);
+f2.write((char*)&A,sizeof(A));
+}
+else
+f2.write((char *)&A,sizeof(A));
+
+f2.seekg(0);
+cout<<"Please wait untill you donate blood completely.......\n";
+delay(5000);
+cout<<"\nQuantity of AB- Blood in Blood Bank=";
+f2.read((char*)&A,sizeof(A));
+  { cout<<A.total<<" ml"; }
+f2.close();
+}
+else cout<<"not Opened.... TRY AGAIN!!!!!!";
+f.open("ABminus.dat",ios::out|ios::app|ios::binary);
+f.write((char*)&dr,sizeof(dr));
+f.close();
+break;
+
+case 7: o_plus+=q;
+f2.open("ap7.dat",ios::out|ios::in|ios::binary);
+if(f2)
+{
+f2.seekg(0,ios::end);
+if(f2.tellg()!=0)
+{ f2.seekg(0);
+f2.read((char*)&A,sizeof(A));
+A.total+=o_plus;
+
+f2.seekp(0);
+f2.write((char*)&A,sizeof(A));
+}
+else
+f2.write((char *)&A,sizeof(A));
+
+f2.seekg(0);
+cout<<"Please wait untill you donate blood completely.......\n";
+delay(5000);
+cout<<"\nQuantity of O+ Blood in Blood Bank=";
+f2.read((char*)&A,sizeof(A));
+  { cout<<A.total<<" ml"; }
+f2.close();
+}
+else cout<<"not Opened.... TRY AGAIN!!!!!!";
+f.open("Oplus.dat",ios::out|ios::app|ios::binary);
+f.write((char*)&dr,sizeof(dr));
+f.close();
+break;
+
+case 8: o_minus+=q;
+f2.open("ap7.dat",ios::out|ios::in|ios::binary);
+if(f2)
+{
+f2.seekg(0,ios::end);
+if(f2.tellg()!=0)
+{ f2.seekg(0);
+f2.read((char*)&A,sizeof(A));
+A.total+=o_minus;
+
+f2.seekp(0);
+f2.write((char*)&A,sizeof(A));
+}
+else
+f2.write((char *)&A,sizeof(A));
+
+f2.seekg(0);
+cout<<"Please wait untill you donate blood completely.......\n";
+delay(5000);
+cout<<"\nQuantity of O- Blood in Blood Bank=";
+f2.read((char*)&A,sizeof(A));
+  { cout<<A.total<<" ml"; }
+f2.close();
+}
+else cout<<"not Opened.... TRY AGAIN!!!!!!";
+f.open("Ominus.dat",ios::out|ios::app|ios::binary);
+f.write((char*)&dr,sizeof(dr));
+f.close();
+break;
+
+default :cout<<"Error!!!";
+}
+}
+
+
+class Recepient :public Person
+{
+public:
+void update_rec(int p,int q);
+}R[20],Rr;
+void Recepient::update_rec(int p,int q)
+{
+Rr=R[r];
+fstream f;
+blgroup();
+
+if(p==1)
+{
+fstream g("ap1.dat",ios::binary|ios::in|ios::out);
+g.read((char*)&A,sizeof(A));
+if(q<A.total)
+{
+A.total-=q;
+cout<<"\n Quantity of A+ blood remaining in blood bank="<<A.total<<" ml";
+g.seekg(0);
+g.write((char*)&A,sizeof(A));
+
+g.close();}
+else
+{cout<<"\n Sorry,Blood,not available";}
+}
+
+else if(p==2)
+{
+fstream g("ap2.dat",ios::binary|ios::in|ios::out);
+g.read((char*)&A,sizeof(A));
+if(q<A.total)
+{
+A.total-=q;
+cout<<"\n Quantity of A- blood remaining in blood bank="<<A.total<<" ml";
+g.seekg(0);
+g.write((char*)&A,sizeof(A));
+
+g.close();}
+else
+{cout<<"\n Sorry,Blood,not available";}
+}
+
+else if(p==3)
+{
+fstream g("ap3.dat",ios::binary|ios::in|ios::out);
+g.read((char*)&A,sizeof(A));
+if(q<A.total)
+{
+A.total-=q;
+cout<<"\n Quantity of B+ blood remaining in blood bank="<<A.total<<" ml";
+g.seekg(0);
+g.write((char*)&A,sizeof(A));
+
+g.close();}
+else
+{cout<<"\n Sorry,Blood,not available";}
+}
+
+else if(p==4)
+{
+fstream g("ap4.dat",ios::binary|ios::in|ios::out);
+g.read((char*)&A,sizeof(A));
+if(q<A.total)
+{
+A.total-=q;
+cout<<"\n Quantity of B- blood remaining in blood bank="<<A.total<<" ml";
+g.seekg(0);
+g.write((char*)&A,sizeof(A));
+
+g.close();}
+else
+{cout<<"\n Sorry,Blood,not available";}
+}
+
+else if(p==5)
+{
+fstream g("ap5.dat",ios::binary|ios::in|ios::out);
+g.read((char*)&A,sizeof(A));
+if(q<A.total)
+{
+A.total-=q;
+cout<<"\n Quantity of AB+ blood remaining in blood bank="<<A.total<<" ml";
+g.seekg(0);
+g.write((char*)&A,sizeof(A));
+
+g.close();}
+else
+{cout<<"\n Sorry,Blood,not available";}
+}
+
+else if(p==6)
+{
+fstream g("ap6.dat",ios::binary|ios::in|ios::out);
+g.read((char*)&A,sizeof(A));
+if(q<A.total)
+{
+A.total-=q;
+cout<<"\n Quantity of AB- blood remaining in blood bank="<<A.total<<" ml";
+g.seekg(0);
+g.write((char*)&A,sizeof(A));
+
+g.close();}
+else
+{cout<<"\n Sorry,Blood,not available";}
+}
+
+else if(p==7)
+{
+fstream g("ap7.dat",ios::binary|ios::in|ios::out);
+g.read((char*)&A,sizeof(A));
+if(q<A.total)
+{
+A.total-=q;
+cout<<"\n Quantity of O+ blood remaining in blood bank="<<A.total<<" ml";
+g.seekg(0);
+g.write((char*)&A,sizeof(A));
+
+g.close();}
+else
+{cout<<"\n Sorry,Blood,not available";}
+}
+
+else if(p==8)
+{
+fstream g("ap8.dat",ios::binary|ios::in|ios::out);
+g.read((char*)&A,sizeof(A));
+if(q<A.total)
+{
+A.total-=q;
+cout<<"\n Quantity of O- blood remaining in blood bank="<<A.total<<" ml";
+g.seekg(0);
+g.write((char*)&A,sizeof(A));
+
+g.close();}
+else
+{cout<<"\n Sorry,Blood,not available";}
+}
+
+if(p<0||p>8)
+cout<<"Error in receiver!!!!"<<endl;
+
+f.open("Receiver.dat",ios::out|ios::app|ios::binary);
+f.write((char*)&Rr,sizeof(Rr));
+f.close();
+}
+void main()
+{
+clrscr();
+int b,qty,age,weight,g,j;
+char ch='y',z;
+color();
+do
+{
+clrscr();
+cout<<"Menu:\n";
+cout<<"1.Donate Blood\n"
+	 <<"2.Receive Blood\n"
+	 <<"3.View details of all donors\n"
+	 <<"4.View details of all receivers\n"
+	 <<"5.View amount of blood of any blood group in SVR blood bank\n"
+	 <<"6.View details of donors of any blood group in SVR blood bank\n"
+	 <<"7.View terms and conditions of SVR blood bank\n"
+	 <<"8.Exit\n";
+cout<<"Enter your choice:";
+cin>>b;
+if(b==1)
+{
+clrscr();
+			cout<<"You have chosen to donate blood\n";
+			cout<<"\nWhat's your age:";
+			cin>>age;
+			if(age<18)
+			{cout<<"\nSorry, you cannot donate blood as your age\n"
+				 <<"should be more than 18 to donate blood\n";}
+			  else
+			  {
+				cout<<"\nWhat's your weight:";
+				cin>>weight;
+				 if(weight<50)
+				  {
+					 cout<<"\nSorry, you cannot donate blood as your\n"
+					<<"weight should be more than 50 to donate blood\n";
+				  }
+				else
+				{ cout<<"\nDo you have any transmittable diseases?(y/n)";
+					cin>>z;
+					if(z=='y'||z=='Y')
+					  {cout<<"\nSorry, you cannot donate blood\n";
+						 }
+					else
+					{cout<<"\nHave you donated blood this week?(y/n)";
+					  cin>>z;
+					 if(z=='y'||z=='Y')
+						{cout<<"\nSorry, you cannot donate blood\n";
+						}
+					else
+				  {clrscr();
+					D[d].initdata();
+					D[d].update_don(450);
+					d++;
+					cout<<"\nThank You!";
+				 }
+			}
+			}
+			}
+}
+  if(b==2)
+  {clrscr();
+					  cout<<"\nReceive Blood\n";
+					  R[r].initdata();
+					  if(strcmpi("A+",R[r].blgp)==0)
+					  g=1;
+					  else if(strcmpi("A-",R[r].blgp)==0)
+					  g=2;
+					  else if(strcmpi("B+",R[r].blgp)==0)
+					  g=3;
+					  else if(strcmpi("B-",R[r].blgp)==0)
+					  g=4;
+					  else if(strcmpi("AB+",R[r].blgp)==0)
+					  g=5;
+					  else if(strcmpi("AB-",R[r].blgp)==0)
+					  g=6;
+					  else if(strcmpi("O+",R[r].blgp)==0)
+					  g=7;
+					  else if(strcmpi("O-",R[r].blgp)==0)
+					  g=8;
+					  cout<<"\nQuantity needed:";
+					  cin>>qty;
+					  R[r].update_rec(g,qty);
+					  r++;
+					  cout<<"\nThanks for coming";
+  }
+if(b==3)
+{clrscr();
+			fstream f3("a+.txt",ios::out|ios::in);
+			f3<<a_plus;
+			f3.close();
+			fstream f1;
+			Donor X;
+			cout<<"\nDetails of all donors\n";
+			f1.open("Aplus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{
+			X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			f1.open("Aminus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			f1.open("Bplus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			f1.open("Bminus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			f1.open("ABplus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			f1.open("ABminus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			f1.open("Oplus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			f1.open("Ominus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+
+}
+			if(b==4)
+			{
+			fstream f1;
+			Recepient Y;
+			cout<<"\nDetails of all recepients\n";
+			f1.open("Receiver.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&Y,sizeof(Y)))
+			{Y.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			 }
+		  if(b==5)
+		  {
+			char a[2];
+			cout<<"enter blood type\n";
+			gets(a);
+
+			 if(strcmp(a,"A+")==0){fstream g("ap1.dat",ios::binary|ios::in|ios::out);
+						  g.read((char*)&A,sizeof(A));
+						  cout<<"Amount of A+ blood is "<<A.total<<" ml";
+						  }
+
+			 if(strcmp(a,"A-")==0){fstream g("ap2.dat",ios::binary|ios::in|ios::out);
+						  g.read((char*)&A,sizeof(A));
+						  cout<<"Amount of A- blood is "<<A.total<<" ml";
+						  }
+
+			 if(strcmp(a,"B+")==0){fstream g("ap3.dat",ios::binary|ios::in|ios::out);
+						  g.read((char*)&A,sizeof(A));
+						  cout<<"Amount of B+ blood is "<<A.total<<" ml";
+						  }
+
+			 if(strcmp(a,"B-")==0){fstream g("ap4.dat",ios::binary|ios::in|ios::out);
+						  g.read((char*)&A,sizeof(A));
+						  cout<<"Amount of B- blood is "<<A.total<<" ml";
+						  }
+
+			 if(strcmp(a,"AB+")==0){fstream g("ap5.dat",ios::binary|ios::in|ios::out);
+						  g.read((char*)&A,sizeof(A));
+						  cout<<"Amount of AB+ blood is "<<A.total<<" ml";
+						  }
+
+			 if(strcmp(a,"AB-")==0){fstream g("ap6.dat",ios::binary|ios::in|ios::out);
+						  g.read((char*)&A,sizeof(A));
+						  cout<<"Amount of AB- blood is "<<A.total<<" ml";
+						  }
+
+			 if(strcmp(a,"O+")==0){fstream g("ap7.dat",ios::binary|ios::in|ios::out);
+						  g.read((char*)&A,sizeof(A));
+						  cout<<"Amount of O+ blood is "<<A.total<<" ml";
+						  }
+
+			 if(strcmp(a,"O-")==0){fstream g("ap8.dat",ios::binary|ios::in|ios::out);
+						  g.read((char*)&A,sizeof(A));
+						  cout<<"Amount of O- blood is "<<A.total<<" ml";
+						  }
+			}
+		  if(b==6)
+		  { Donor X;
+			char v[4];
+			cout<<"Enter the blood group\n";
+			gets(v);
+			if(strcmp(v,"A+")==0)
+			{
+			fstream f1;
+			f1.open("Aplus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{
+			X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			}
+
+			else if(strcmp(v,"A-")==0)
+			{
+			fstream f1;
+			f1.open("Aminus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{
+			X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			}
+
+			else if(strcmp(v,"B+")==0)
+			{
+			 fstream f1;
+			f1.open("Bplus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{
+			X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			}
+
+			else if(strcmp(v,"B-")==0)
+			{  fstream f1;
+			f1.open("Bminus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{
+			X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			}
+
+			else if(strcmp(v,"AB+")==0)
+			{fstream f1;
+			f1.open("ABplus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{
+			X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			}
+
+		  else if(strcmp(v,"AB-")==0)
+			{ fstream f1;
+			f1.open("ABminus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{
+			X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			}
+
+		  else if(strcmp(v,"O+")==0)
+			{  fstream f1;
+			f1.open("Oplus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{
+			X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			}
+
+			else if(strcmp(v,"O-")==0)
+			{  fstream f1;
+			f1.open("Ominus.dat",ios::in|ios::out|ios::binary);
+			while(f1.read((char*)&X,sizeof(X)))
+			{
+			X.dispdata();
+			cout<<"\n";
+			getch();}
+			f1.close();
+			}
+
+		}
+
+	 if(b==7)
+	 {cout<<endl;
+	 ifstream k;
+	 char a;
+	 k.open("terms.txt");
+	 if(k)
+	 {
+	 while(k.get(a))
+	 cout<<a;
+	 }
+	 }
+	if(b>=8)
+	 {
+	 cout<<"Thank you for coming!!\n";
+	 exit(0);
+	 }
+		  cout<<"\nPress Y to view the menu again or N to exit:";
+			cin>>ch;
+		  }
+		  while(ch=='y'||ch=='Y');
+		  }
